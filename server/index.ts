@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { healthCheck } from "./routes/health";
 import { testEmail, getEmailStatus } from "./routes/test";
+import { debugStatus } from "./routes/debug";
 import {
   sendOTP,
   verifyOTP,
@@ -75,6 +76,9 @@ export function createServer() {
   // Authentication routes
   app.post("/api/auth/send-otp", sendOTP);
   app.post("/api/auth/verify-otp", verifyOTP);
+
+  // Debug/status route (protected in production via DEBUG_TOKEN)
+  app.get("/api/debug/status", debugStatus);
   // Upload endpoints (profile photo and KYC) - accept base64 in JSON
   import("./routes/uploads")
     .then((m) => {
@@ -176,7 +180,7 @@ export function createServer() {
 
 // Handle graceful shutdown
 process.on("SIGTERM", async () => {
-  console.log("🛑 [SHUTDOWN] SIGTERM received, shutting down gracefully...");
+  console.log("��� [SHUTDOWN] SIGTERM received, shutting down gracefully...");
   try {
     const Database = await import("./lib/database");
     await Database.default.getInstance().disconnect();
