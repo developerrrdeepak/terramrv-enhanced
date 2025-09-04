@@ -113,7 +113,7 @@ export default function ProfileEditor({ onUpdate }: { onUpdate?: () => void }) {
           {kycFiles.map(f => <div key={f.name} className="text-sm text-gray-600">{f.name}</div>)}
         </div>
         <div className="mt-2">
-          <Button onClick={uploadKyc} disabled={kycFiles.length===0 || loading} className="bg-[hsl(var(--primary))]">{loading ? 'Uploading...' : 'Upload KYC'}</Button>
+          <Button onClick={uploadKyc} disabled={kycFiles.length===0 || loading} className="bg-[hsl(var(--primary))]">{loading ? t('loading') : t('uploadKYC')}</Button>
         </div>
       </div>
     </div>
