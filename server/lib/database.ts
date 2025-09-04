@@ -95,6 +95,14 @@ class Database {
     return this.getDb().collection("passwords");
   }
 
+  getCreditsCollection(): Collection<any> {
+    return this.getDb().collection("credits");
+  }
+
+  getPayoutsCollection(): Collection<any> {
+    return this.getDb().collection("payouts");
+  }
+
   private async createIndexes(): Promise<void> {
     try {
       // Farmers collection indexes
@@ -134,6 +142,12 @@ class Database {
         { userId: 1, userType: 1 },
         { unique: true },
       );
+
+      // Credits and payouts collections
+      await this.getCreditsCollection().createIndex({ farmerId: 1 });
+      await this.getCreditsCollection().createIndex({ status: 1 });
+      await this.getPayoutsCollection().createIndex({ farmerId: 1 });
+      await this.getPayoutsCollection().createIndex({ status: 1 });
 
       console.log("📊 Database indexes created successfully");
     } catch (error) {

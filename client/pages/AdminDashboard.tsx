@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -124,7 +124,7 @@ const mockProjects = [
 ];
 
 export default function AdminDashboard() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, farmerRegister } = useAuth();
   const [farmers, setFarmers] = useState(mockFarmers);
   const [projects, setProjects] = useState(mockProjects);
   const [selectedFarmer, setSelectedFarmer] = useState<any>(null);
@@ -136,10 +136,54 @@ export default function AdminDashboard() {
     requirements: "",
   });
   const [showNewProjectDialog, setShowNewProjectDialog] = useState(false);
+  const [showAddFarmerDialog, setShowAddFarmerDialog] = useState(false);
+  const [addFarmerData, setAddFarmerData] = useState({
+    email: "",
+    password: "",
+    name: "",
+    phone: "",
+  });
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string | undefined>(
     undefined,
   );
+
+  // approvals data
+  const [credits, setCredits] = useState<any[]>([]);
+  const [payouts, setPayouts] = useState<any[]>([]);
+  const isMounted = useRef(true);
+
+  const fetchApprovals = async () => {
+    try {
+      const token = localStorage.getItem("auth_token");
+      const [cRes, pRes] = await Promise.all([
+        fetch("/api/admin/credits", {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch("/api/admin/payouts", {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      ]);
+      if (cRes.ok) {
+        const data = await cRes.json();
+        if (isMounted.current) setCredits(data.credits || []);
+      }
+      if (pRes.ok) {
+        const data = await pRes.json();
+        if (isMounted.current) setPayouts(data.payouts || []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch approvals:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchApprovals();
+    return () => {
+      isMounted.current = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const filteredFarmers = useMemo(() => {
     return farmers.filter((f) => {
@@ -220,13 +264,149 @@ export default function AdminDashboard() {
     const verifiedFarmers = farmers.filter(
       (f) => f.status === "verified",
     ).length;
-    const totalCredits = farmers.reduce((sum, f) => sum + f.carbonCredits, 0);
-    const totalLand = farmers.reduce((sum, f) => sum + f.landSize, 0);
+    const totalCredits = farmers.reduce(
+      (sum, f) => sum + (f.carbonCredits || 0),
+      0,
+    );
+    const totalLand = farmers.reduce((sum, f) => sum + (f.landSize || 0), 0);
 
     return { totalFarmers, verifiedFarmers, totalCredits, totalLand };
   };
 
   const stats = calculateStats();
+
+  // Approvals actions
+  const approveCredit = async (creditId: string, approve = true) => {
+    try {
+      const token = localStorage.getItem("auth_token");
+      const res = await fetch("/api/admin/credits/approve", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ creditId, approve }),
+      });
+      if (res.ok) {
+        toast.success("Credit updated");
+        fetchApprovals();
+      } else {
+        const txt = await res.text();
+        toast.error(`Failed: ${txt}`);
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Network error");
+    }
+  };
+
+  const markPayoutPaid = async (payoutId: string) => {
+    try {
+      const token = localStorage.getItem("auth_token");
+      const res = await fetch("/api/admin/payouts/mark-paid", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ payoutId }),
+      });
+      if (res.ok) {
+        toast.success("Payout marked as paid");
+        fetchApprovals();
+      } else {
+        const txt = await res.text();
+        toast.error(`Failed: ${txt}`);
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Network error");
+    }
+  };
+
+  const handleAddFarmer = async () => {
+    try {
+      if (!addFarmerData.email || !addFarmerData.password) {
+        toast.error("Email and password required");
+        return;
+      }
+      const result = await farmerRegister({
+        email: addFarmerData.email,
+        password: addFarmerData.password,
+        name: addFarmerData.name,
+        phone: addFarmerData.phone,
+      } as any);
+
+      if (result.success) {
+        toast.success("Farmer created and authenticated");
+        setShowAddFarmerDialog(false);
+        // Refresh local list (in real app fetch from server)
+        setFarmers((prev) => [
+          ...prev,
+          {
+            id: Date.now().toString(),
+            name: addFarmerData.name || addFarmerData.email.split("@")[0],
+            email: addFarmerData.email,
+            phone: addFarmerData.phone,
+            location: "",
+            landSize: 0,
+            status: "verified",
+            carbonCredits: 0,
+            joinedDate: new Date().toISOString().split("T")[0],
+          },
+        ]);
+      } else {
+        toast.error(result.message || "Failed to create farmer");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Network error");
+    }
+  };
+
+  const uploadKycForSelectedFarmer = async (file?: File) => {
+    if (!selectedFarmer) return;
+    try {
+      let docs: any[] = [];
+      if (file) {
+        const reader = new FileReader();
+        const asBase64: string = await new Promise((resolve, reject) => {
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+        docs.push({ filename: file.name, data: asBase64, type: "kyc" });
+      } else {
+        // No file provided - mock a sample doc
+        docs.push({
+          filename: `kyc_${Date.now()}.txt`,
+          data: btoa("sample"),
+          type: "kyc",
+        });
+      }
+
+      const token = localStorage.getItem("auth_token");
+      const res = await fetch("/api/auth/upload-kyc", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ docs }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        toast.success("KYC uploaded");
+        setSelectedFarmer({ ...selectedFarmer, kyc: data.docs });
+      } else {
+        const txt = await res.text();
+        toast.error(`Upload failed: ${txt}`);
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Upload error");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-4">
@@ -395,11 +575,24 @@ export default function AdminDashboard() {
               <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-2">
-              <Button className="w-full">Create Project</Button>
-              <Button variant="outline" className="w-full">
-                Verify Pending Farmers
+              <Button
+                className="w-full"
+                onClick={() => setShowNewProjectDialog(true)}
+              >
+                Create Project
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => setShowAddFarmerDialog(true)}
+              >
+                Add / Onboard Farmer
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => exportReport("Farmers")}
+              >
                 Export Reports
               </Button>
             </CardContent>
@@ -761,6 +954,101 @@ export default function AdminDashboard() {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Approvals: Credits & Payouts */}
+              <Card className="bg-white/90 border border-emerald-100 shadow-sm md:col-span-2">
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Clock className="h-5 w-5" />
+                      <span>Approvals</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={fetchApprovals}
+                      >
+                        Refresh
+                      </Button>
+                    </div>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <h4 className="font-semibold mb-2">Pending Credits</h4>
+                      {credits.length === 0 && (
+                        <p className="text-sm text-gray-500">
+                          No pending credits
+                        </p>
+                      )}
+                      {credits.map((c) => (
+                        <div
+                          key={c.id}
+                          className="p-3 border rounded mb-2 flex items-center justify-between"
+                        >
+                          <div>
+                            <div className="font-medium">
+                              {c.farmerName} — {c.project}
+                            </div>
+                            <div className="text-sm text-gray-600">
+                              Amount: {c.amount} credits
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              size="sm"
+                              className="bg-green-600 hover:bg-green-700"
+                              onClick={() => approveCredit(c.id, true)}
+                            >
+                              <CheckCircle className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => approveCredit(c.id, false)}
+                            >
+                              <XCircle className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold mb-2">Payouts</h4>
+                      {payouts.length === 0 && (
+                        <p className="text-sm text-gray-500">
+                          No pending payouts
+                        </p>
+                      )}
+                      {payouts.map((p) => (
+                        <div
+                          key={p.id}
+                          className="p-3 border rounded mb-2 flex items-center justify-between"
+                        >
+                          <div>
+                            <div className="font-medium">{p.farmerName}</div>
+                            <div className="text-sm text-gray-600">
+                              Amount: ₹{p.amount}
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              size="sm"
+                              className="bg-green-600 hover:bg-green-700"
+                              onClick={() => markPayoutPaid(p.id)}
+                            >
+                              <IndianRupee className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 
@@ -920,6 +1208,22 @@ export default function AdminDashboard() {
                     </p>
                   </div>
                 </div>
+
+                <div className="flex items-center space-x-2">
+                  <input
+                    id="kycFile"
+                    type="file"
+                    accept="image/*,application/pdf"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) uploadKycForSelectedFarmer(f);
+                    }}
+                  />
+                  <Button onClick={() => uploadKycForSelectedFarmer()}>
+                    Upload Sample KYC
+                  </Button>
+                </div>
+
                 {selectedFarmer.status === "pending" && (
                   <div className="flex space-x-2 pt-4">
                     <Button
@@ -946,6 +1250,82 @@ export default function AdminDashboard() {
             </DialogContent>
           </Dialog>
         )}
+
+        {/* Create Farmer Dialog */}
+        <Dialog
+          open={showAddFarmerDialog}
+          onOpenChange={setShowAddFarmerDialog}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add / Onboard Farmer</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="farmerEmail">Email</Label>
+                <Input
+                  id="farmerEmail"
+                  value={addFarmerData.email}
+                  onChange={(e) =>
+                    setAddFarmerData({
+                      ...addFarmerData,
+                      email: e.target.value,
+                    })
+                  }
+                  placeholder="farmer@example.com"
+                />
+              </div>
+              <div>
+                <Label htmlFor="farmerName">Name</Label>
+                <Input
+                  id="farmerName"
+                  value={addFarmerData.name}
+                  onChange={(e) =>
+                    setAddFarmerData({ ...addFarmerData, name: e.target.value })
+                  }
+                  placeholder="Name"
+                />
+              </div>
+              <div>
+                <Label htmlFor="farmerPhone">Phone</Label>
+                <Input
+                  id="farmerPhone"
+                  value={addFarmerData.phone}
+                  onChange={(e) =>
+                    setAddFarmerData({
+                      ...addFarmerData,
+                      phone: e.target.value,
+                    })
+                  }
+                  placeholder="Phone"
+                />
+              </div>
+              <div>
+                <Label htmlFor="farmerPassword">Password</Label>
+                <Input
+                  id="farmerPassword"
+                  type="password"
+                  value={addFarmerData.password}
+                  onChange={(e) =>
+                    setAddFarmerData({
+                      ...addFarmerData,
+                      password: e.target.value,
+                    })
+                  }
+                  placeholder="Password"
+                />
+              </div>
+              <Button
+                onClick={handleAddFarmer}
+                className="w-full bg-green-600 hover:bg-green-700"
+              >
+                Create Farmer
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* New Project Dialog handled earlier */}
       </div>
     </div>
   );

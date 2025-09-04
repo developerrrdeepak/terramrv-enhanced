@@ -18,6 +18,12 @@ import {
   socialCallback,
   initializeDatabase,
 } from "./routes/auth";
+import {
+  getCredits,
+  approveCredit,
+  getPayouts,
+  markPayoutPaid,
+} from "./routes/admin";
 
 export function createServer() {
   const app = express();
@@ -92,6 +98,12 @@ export function createServer() {
   // Admin routes (protected)
   app.get("/api/admin/farmers", getFarmers);
   app.put("/api/admin/farmer-status", updateFarmerStatus);
+
+  // Admin approvals and finance
+  app.get("/api/admin/credits", getCredits);
+  app.put("/api/admin/credits/approve", approveCredit);
+  app.get("/api/admin/payouts", getPayouts);
+  app.put("/api/admin/payouts/mark-paid", markPayoutPaid);
 
   // Test routes (development only)
   if (process.env.NODE_ENV !== "production") {
