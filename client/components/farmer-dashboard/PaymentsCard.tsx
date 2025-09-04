@@ -8,10 +8,11 @@ const payments = [
 ];
 
 function PaymentsCard() {
+  const { t } = useI18n();
   return (
     <Card className="rounded-2xl shadow-sm card-interactive card-soft">
       <CardHeader>
-        <CardTitle>Recent Payouts</CardTitle>
+        <CardTitle>{t('recentPayouts')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
