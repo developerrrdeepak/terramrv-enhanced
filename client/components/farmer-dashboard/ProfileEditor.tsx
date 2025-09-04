@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
+import { useI18n } from "@/contexts/I18nContext";
+
 export default function ProfileEditor({ onUpdate }: { onUpdate?: () => void }) {
+  const { t } = useI18n();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [kycFiles, setKycFiles] = useState<File[]>([]);
