@@ -11,21 +11,18 @@ const days = [
   { d: "Sun", t: 28, r: 30 },
 ];
 
-export default function WeatherCard() {
+function WeatherCard() {
   return (
-    <Card className="rounded-2xl shadow-sm">
+    <Card className="rounded-2xl shadow-sm card-interactive card-soft">
       <CardHeader>
         <CardTitle>7-day Forecast</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex gap-3 overflow-x-auto py-2">
           {days.map((day) => (
-            <div
-              key={day.d}
-              className="min-w-[84px] bg-[#F9F9F9] rounded-xl p-2 text-center"
-            >
+            <div key={day.d} className="min-w-[84px] bg-[hsl(var(--muted))] rounded-xl p-2 text-center">
               <div className="text-sm font-medium text-gray-700">{day.d}</div>
-              <div className="text-lg font-bold text-[#2196F3]">{day.t}°C</div>
+              <div className="text-lg font-bold text-[hsl(var(--accent))]">{day.t}°C</div>
               <div className="text-xs text-gray-500">{day.r}% rain</div>
             </div>
           ))}
@@ -34,3 +31,5 @@ export default function WeatherCard() {
     </Card>
   );
 }
+
+export default React.memo(WeatherCard);
