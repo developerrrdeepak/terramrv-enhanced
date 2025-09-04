@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { IndianRupee } from "lucide-react";
+import { useI18n } from "@/contexts/I18nContext";
 
 const payments = [
   { id: 1, date: "2025-08-01", amount: 4500, method: "UPI" },
