@@ -102,7 +102,7 @@ export default function ProfileEditor({ onUpdate }: { onUpdate?: () => void }) {
           <label className="cursor-pointer">
             <Input type="file" onChange={handlePhotoChange} accept="image/*" />
           </label>
-          <Button onClick={uploadPhoto} disabled={!photoFile || loading} className="bg-[hsl(var(--primary))]">{loading ? 'Uploading...' : 'Upload Photo'}</Button>
+          <Button onClick={uploadPhoto} disabled={!photoFile || loading} className="bg-[hsl(var(--primary))]">{loading ? t('loading') : t('uploadPhoto')}</Button>
         </div>
       </div>
 
