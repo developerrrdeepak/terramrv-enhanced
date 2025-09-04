@@ -21,6 +21,9 @@
     "typecheck": "tsc",
     "setup": "node scripts/setup.js",
     "setup:db": "node scripts/setup.js",
+    "seed": "node scripts/seed-demo.js",
+    "worker": "node server/worker.js",
+    "setup:worker": "node server/worker.js &",
     "test:api": "node scripts/test-api.js",
     "generate:secret": "node scripts/generate-secret.js"
   },
