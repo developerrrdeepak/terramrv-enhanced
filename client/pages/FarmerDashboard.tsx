@@ -48,6 +48,32 @@ export default function FarmerDashboard() {
   });
   const [loading, setLoading] = useState(false);
   const [profileComplete, setProfileComplete] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("overview");
+
+  // map tab value to sidebar friendly key
+  const tabToKey: Record<string, string> = {
+    overview: "Overview",
+    map: "Farm Map",
+    carbon: "Carbon Wallet",
+    profile: "Profile",
+  };
+  const keyToTab: Record<string, string> = {
+    Overview: "overview",
+    "Farm Map": "map",
+    "Carbon Wallet": "carbon",
+    Profile: "profile",
+    Weather: "overview",
+    Payments: "overview",
+    Help: "overview",
+  };
+
+  const handleSidebarSelect = (key: string) => {
+    const tab = keyToTab[key] || "overview";
+    setActiveTab(tab);
+    // focus main content for accessibility
+    const main = document.querySelector('main');
+    if (main) (main as HTMLElement).focus();
+  };
 
   const earningsData = useMemo(() => {
     const landSize =
