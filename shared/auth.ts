@@ -28,6 +28,8 @@ export interface Farmer {
   panNumber?: string;
   bankAccountNumber?: string;
   ifscCode?: string;
+  photoUrl?: string; // profile photo url
+  kyc?: { type?: string; url: string }[]; // uploaded KYC documents
 
   // Carbon Projects
   interestedProjects?: string[];
