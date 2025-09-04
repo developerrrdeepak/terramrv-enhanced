@@ -14,6 +14,7 @@ import Header from "@/components/farmer-dashboard/Header";
 import Sidebar from "@/components/farmer-dashboard/Sidebar";
 import BottomNav from "@/components/farmer-dashboard/BottomNav";
 import NotificationsPanel from "@/components/farmer-dashboard/NotificationsPanel";
+import { useI18n } from "@/contexts/I18nContext";
 
 const MapCard = lazy(() => import("@/components/farmer-dashboard/MapCard"));
 const ProfileEditor = lazy(() => import("@/components/farmer-dashboard/ProfileEditor"));
