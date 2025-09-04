@@ -8,10 +8,11 @@ const chartData = Array.from({ length: 6 }).map((_, i) => ({
 }));
 
 function CarbonWalletCard({ credits = 25, co2 = 12 }: { credits?: number; co2?: number }) {
+  const { t } = useI18n();
   return (
     <Card className="rounded-2xl shadow-sm card-interactive card-soft">
       <CardHeader>
-        <CardTitle>Carbon Wallet</CardTitle>
+        <CardTitle>{t('carbonWallet')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between mb-3">
