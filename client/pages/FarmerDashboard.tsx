@@ -15,6 +15,7 @@ import BottomNav from "@/components/farmer-dashboard/BottomNav";
 import NotificationsPanel from "@/components/farmer-dashboard/NotificationsPanel";
 
 const MapCard = lazy(() => import("@/components/farmer-dashboard/MapCard"));
+const ProfileEditor = lazy(() => import("@/components/farmer-dashboard/ProfileEditor"));
 const CarbonWalletCard = lazy(
   () => import("@/components/farmer-dashboard/CarbonWalletCard"),
 );
