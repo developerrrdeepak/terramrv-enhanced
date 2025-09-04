@@ -1,11 +1,20 @@
 import React from "react";
-import { Home, MapPin, Leaf, CloudDrizzle, CreditCard, HelpCircle } from "lucide-react";
+import {
+  Home,
+  MapPin,
+  Leaf,
+  CloudDrizzle,
+  CreditCard,
+  HelpCircle,
+} from "lucide-react";
 
 export default function Sidebar() {
   return (
     <aside className="hidden lg:flex flex-col gap-4 p-4 bg-white rounded-2xl shadow-sm sticky top-6 h-[calc(100vh-96px)] w-56">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-[#4CAF50] rounded-full flex items-center justify-center text-white font-bold">FR</div>
+        <div className="w-10 h-10 bg-[#4CAF50] rounded-full flex items-center justify-center text-white font-bold">
+          FR
+        </div>
         <div>
           <div className="font-semibold text-gray-900">FarmRoots</div>
           <div className="text-xs text-gray-500">Dashboard</div>
@@ -40,8 +49,12 @@ export default function Sidebar() {
       </nav>
 
       <div className="mt-auto text-xs text-gray-500">
-        <div>Last sync: <span className="font-medium text-gray-700">5m</span></div>
-        <div className="mt-2">Connection: <span className="font-medium text-green-600">Online</span></div>
+        <div>
+          Last sync: <span className="font-medium text-gray-700">5m</span>
+        </div>
+        <div className="mt-2">
+          Connection: <span className="font-medium text-green-600">Online</span>
+        </div>
       </div>
     </aside>
   );

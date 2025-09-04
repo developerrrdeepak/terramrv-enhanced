@@ -6,7 +6,9 @@ export default function Header() {
   return (
     <header className="w-full flex items-center justify-between py-3 px-4 bg-[#F9F9F9] rounded-2xl shadow-sm">
       <div className="flex items-center space-x-3">
-        <div className="w-10 h-10 bg-[#4CAF50] rounded-full flex items-center justify-center text-white font-bold">FR</div>
+        <div className="w-10 h-10 bg-[#4CAF50] rounded-full flex items-center justify-center text-white font-bold">
+          FR
+        </div>
         <div>
           <div className="text-lg font-semibold text-gray-900">FarmRoots</div>
           <div className="text-sm text-gray-500">Farmer Dashboard</div>

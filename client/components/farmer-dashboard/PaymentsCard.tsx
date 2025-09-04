@@ -16,12 +16,18 @@ export default function PaymentsCard() {
       <CardContent>
         <div className="space-y-2">
           {payments.map((p) => (
-            <div key={p.id} className="flex items-center justify-between bg-[#F9F9F9] p-2 rounded-lg">
+            <div
+              key={p.id}
+              className="flex items-center justify-between bg-[#F9F9F9] p-2 rounded-lg"
+            >
               <div>
                 <div className="font-medium">{p.method}</div>
                 <div className="text-xs text-gray-500">{p.date}</div>
               </div>
-              <div className="text-sm font-semibold text-[#795548]"><IndianRupee className="inline w-4 h-4 mr-1"/>{p.amount}</div>
+              <div className="text-sm font-semibold text-[#795548]">
+                <IndianRupee className="inline w-4 h-4 mr-1" />
+                {p.amount}
+              </div>
             </div>
           ))}
         </div>

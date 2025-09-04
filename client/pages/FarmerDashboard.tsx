@@ -2,12 +2,7 @@ import React, { Suspense, lazy, useState, useEffect, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
@@ -20,10 +15,16 @@ import BottomNav from "@/components/farmer-dashboard/BottomNav";
 import NotificationsPanel from "@/components/farmer-dashboard/NotificationsPanel";
 
 const MapCard = lazy(() => import("@/components/farmer-dashboard/MapCard"));
-const CarbonWalletCard = lazy(() => import("@/components/farmer-dashboard/CarbonWalletCard"));
-const WeatherCard = lazy(() => import("@/components/farmer-dashboard/WeatherCard"));
+const CarbonWalletCard = lazy(
+  () => import("@/components/farmer-dashboard/CarbonWalletCard"),
+);
+const WeatherCard = lazy(
+  () => import("@/components/farmer-dashboard/WeatherCard"),
+);
 const TasksCard = lazy(() => import("@/components/farmer-dashboard/TasksCard"));
-const PaymentsCard = lazy(() => import("@/components/farmer-dashboard/PaymentsCard"));
+const PaymentsCard = lazy(
+  () => import("@/components/farmer-dashboard/PaymentsCard"),
+);
 
 export default function FarmerDashboard() {
   const { user, isAuthenticated, updateProfile } = useAuth();
@@ -48,7 +49,9 @@ export default function FarmerDashboard() {
   const [profileComplete, setProfileComplete] = useState(false);
 
   const earningsData = useMemo(() => {
-    const landSize = parseFloat((user?.farmer?.landSize as any) || profile.landSize || "0") || 0;
+    const landSize =
+      parseFloat((user?.farmer?.landSize as any) || profile.landSize || "0") ||
+      0;
     const creditsPerHectare = 2.5;
     const pricePerCredit = 500;
     const monthly = Array.from({ length: 6 }).map((_, i) => {
@@ -56,7 +59,9 @@ export default function FarmerDashboard() {
       const seasonal = Math.sin((i / 6) * Math.PI) * 0.15;
       const income = Math.max(0, Math.round(base * (1 + seasonal)));
       return {
-        month: new Date(new Date().setMonth(new Date().getMonth() - (5 - i))).toLocaleString("en-US", { month: "short" }),
+        month: new Date(
+          new Date().setMonth(new Date().getMonth() - (5 - i)),
+        ).toLocaleString("en-US", { month: "short" }),
         income,
       };
     });
@@ -75,7 +80,11 @@ export default function FarmerDashboard() {
         landSize: user.farmer.landSize?.toString() || "",
       });
 
-      const isComplete = user.farmer.name && user.farmer.phone && user.farmer.aadhaarId && user.farmer.location?.address;
+      const isComplete =
+        user.farmer.name &&
+        user.farmer.phone &&
+        user.farmer.aadhaarId &&
+        user.farmer.location?.address;
       setProfileComplete(!!isComplete);
     }
   }, [user]);
@@ -163,14 +172,29 @@ export default function FarmerDashboard() {
                 <main className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   <section className="lg:col-span-2 space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Suspense fallback={<div className="p-6 bg-white rounded-lg shadow-sm">Loading map...</div>}>
+                      <Suspense
+                        fallback={
+                          <div className="p-6 bg-white rounded-lg shadow-sm">
+                            Loading map...
+                          </div>
+                        }
+                      >
                         <MapCard />
-                        <CarbonWalletCard credits={Math.round(totalCredits)} co2={Math.round(totalCredits * 0.5)} />
+                        <CarbonWalletCard
+                          credits={Math.round(totalCredits)}
+                          co2={Math.round(totalCredits * 0.5)}
+                        />
                       </Suspense>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <Suspense fallback={<div className="p-6 bg-white rounded-lg shadow-sm">Loading...</div>}>
+                      <Suspense
+                        fallback={
+                          <div className="p-6 bg-white rounded-lg shadow-sm">
+                            Loading...
+                          </div>
+                        }
+                      >
                         <WeatherCard />
                         <TasksCard />
                         <PaymentsCard />
@@ -183,41 +207,86 @@ export default function FarmerDashboard() {
                       </CardHeader>
                       <CardContent>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <form onSubmit={handleProfileUpdate} className="space-y-3">
+                          <form
+                            onSubmit={handleProfileUpdate}
+                            className="space-y-3"
+                          >
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                               <div>
                                 <Label htmlFor="name">Full Name *</Label>
-                                <Input id="name" value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} required />
+                                <Input
+                                  id="name"
+                                  value={profile.name}
+                                  onChange={(e) =>
+                                    setProfile({
+                                      ...profile,
+                                      name: e.target.value,
+                                    })
+                                  }
+                                  required
+                                />
                               </div>
                               <div>
                                 <Label htmlFor="phone">Phone *</Label>
-                                <Input id="phone" value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} required />
+                                <Input
+                                  id="phone"
+                                  value={profile.phone}
+                                  onChange={(e) =>
+                                    setProfile({
+                                      ...profile,
+                                      phone: e.target.value,
+                                    })
+                                  }
+                                  required
+                                />
                               </div>
                             </div>
 
                             <div className="flex items-center gap-2">
-                              <Button type="submit" className="bg-[#4CAF50]">{loading ? 'Updating...' : 'Update'}</Button>
+                              <Button type="submit" className="bg-[#4CAF50]">
+                                {loading ? "Updating..." : "Update"}
+                              </Button>
                               <Button variant="outline">Export Data</Button>
                             </div>
                           </form>
 
-                          <form onSubmit={handleFarmDataSubmit} className="space-y-3">
+                          <form
+                            onSubmit={handleFarmDataSubmit}
+                            className="space-y-3"
+                          >
                             <div>
                               <Label>Soil pH</Label>
-                              <Input value={farmData.soilPh} onChange={(e) => setFarmData({ ...farmData, soilPh: e.target.value })} />
+                              <Input
+                                value={farmData.soilPh}
+                                onChange={(e) =>
+                                  setFarmData({
+                                    ...farmData,
+                                    soilPh: e.target.value,
+                                  })
+                                }
+                              />
                             </div>
                             <div>
                               <Label>Area Planted (ha)</Label>
-                              <Input value={farmData.areaPlanted} onChange={(e) => setFarmData({ ...farmData, areaPlanted: e.target.value })} />
+                              <Input
+                                value={farmData.areaPlanted}
+                                onChange={(e) =>
+                                  setFarmData({
+                                    ...farmData,
+                                    areaPlanted: e.target.value,
+                                  })
+                                }
+                              />
                             </div>
                             <div className="flex items-center gap-2">
-                              <Button type="submit" className="bg-[#4CAF50]">{loading ? 'Saving...' : 'Save Farm Data'}</Button>
+                              <Button type="submit" className="bg-[#4CAF50]">
+                                {loading ? "Saving..." : "Save Farm Data"}
+                              </Button>
                             </div>
                           </form>
                         </div>
                       </CardContent>
                     </Card>
-
                   </section>
 
                   <aside className="space-y-4">
@@ -230,24 +299,39 @@ export default function FarmerDashboard() {
                       <CardContent>
                         <div className="space-y-2">
                           <div className="text-sm text-gray-700">Land Size</div>
-                          <div className="text-xl font-bold">{profile.landSize || '—'} ha</div>
+                          <div className="text-xl font-bold">
+                            {profile.landSize || "—"} ha
+                          </div>
 
-                          <div className="text-sm text-gray-700">Estimated Credits</div>
-                          <div className="text-xl font-bold text-[#4CAF50]">{Math.round(totalCredits)} cr</div>
+                          <div className="text-sm text-gray-700">
+                            Estimated Credits
+                          </div>
+                          <div className="text-xl font-bold text-[#4CAF50]">
+                            {Math.round(totalCredits)} cr
+                          </div>
 
-                          <div className="text-sm text-gray-700">Estimated Income</div>
-                          <div className="text-xl font-bold text-[#795548]">₹{Math.round(estimatedIncome)}</div>
+                          <div className="text-sm text-gray-700">
+                            Estimated Income
+                          </div>
+                          <div className="text-xl font-bold text-[#795548]">
+                            ₹{Math.round(estimatedIncome)}
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
-
                   </aside>
                 </main>
               </TabsContent>
 
               <TabsContent value="map">
                 <div className="mt-4">
-                  <Suspense fallback={<div className="p-6 bg-white rounded-lg shadow-sm">Loading map...</div>}>
+                  <Suspense
+                    fallback={
+                      <div className="p-6 bg-white rounded-lg shadow-sm">
+                        Loading map...
+                      </div>
+                    }
+                  >
                     <MapCard />
                   </Suspense>
                 </div>
@@ -255,18 +339,35 @@ export default function FarmerDashboard() {
 
               <TabsContent value="carbon">
                 <div className="mt-4">
-                  <Suspense fallback={<div className="p-6 bg-white rounded-lg shadow-sm">Loading charts...</div>}>
+                  <Suspense
+                    fallback={
+                      <div className="p-6 bg-white rounded-lg shadow-sm">
+                        Loading charts...
+                      </div>
+                    }
+                  >
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                      <CarbonWalletCard credits={Math.round(totalCredits)} co2={Math.round(totalCredits * 0.5)} />
+                      <CarbonWalletCard
+                        credits={Math.round(totalCredits)}
+                        co2={Math.round(totalCredits * 0.5)}
+                      />
                       <Card className="rounded-2xl shadow-sm">
                         <CardHeader>
                           <CardTitle>Carbon Details</CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="text-sm text-gray-700">Credits per hectare: 2.5</div>
-                          <div className="text-sm text-gray-700">Price per credit: ₹500</div>
-                          <div className="mt-2 text-lg font-semibold">Estimated Credits: {Math.round(totalCredits)}</div>
-                          <div className="text-lg font-semibold text-[#795548]">Estimated Income: ₹{Math.round(estimatedIncome)}</div>
+                          <div className="text-sm text-gray-700">
+                            Credits per hectare: 2.5
+                          </div>
+                          <div className="text-sm text-gray-700">
+                            Price per credit: ₹500
+                          </div>
+                          <div className="mt-2 text-lg font-semibold">
+                            Estimated Credits: {Math.round(totalCredits)}
+                          </div>
+                          <div className="text-lg font-semibold text-[#795548]">
+                            Estimated Income: ₹{Math.round(estimatedIncome)}
+                          </div>
                         </CardContent>
                       </Card>
                     </div>
@@ -281,20 +382,40 @@ export default function FarmerDashboard() {
                       <CardTitle>Update Profile</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <form onSubmit={handleProfileUpdate} className="space-y-4">
+                      <form
+                        onSubmit={handleProfileUpdate}
+                        className="space-y-4"
+                      >
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="name2">Full Name</Label>
-                            <Input id="name2" value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} />
+                            <Input
+                              id="name2"
+                              value={profile.name}
+                              onChange={(e) =>
+                                setProfile({ ...profile, name: e.target.value })
+                              }
+                            />
                           </div>
                           <div>
                             <Label htmlFor="phone2">Phone</Label>
-                            <Input id="phone2" value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} />
+                            <Input
+                              id="phone2"
+                              value={profile.phone}
+                              onChange={(e) =>
+                                setProfile({
+                                  ...profile,
+                                  phone: e.target.value,
+                                })
+                              }
+                            />
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <Button type="submit" className="bg-[#4CAF50]">Save</Button>
+                          <Button type="submit" className="bg-[#4CAF50]">
+                            Save
+                          </Button>
                           <Button variant="outline">Cancel</Button>
                         </div>
                       </form>

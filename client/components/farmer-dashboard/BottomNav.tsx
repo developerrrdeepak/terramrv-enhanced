@@ -1,5 +1,12 @@
 import React from "react";
-import { Home, MapPin, Leaf, CloudDrizzle, CreditCard, HelpCircle } from "lucide-react";
+import {
+  Home,
+  MapPin,
+  Leaf,
+  CloudDrizzle,
+  CreditCard,
+  HelpCircle,
+} from "lucide-react";
 
 export default function BottomNav() {
   return (
