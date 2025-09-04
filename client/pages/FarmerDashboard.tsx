@@ -182,7 +182,7 @@ export default function FarmerDashboard() {
   const { totalCredits, estimatedIncome } = calculateCarbonCredits();
 
   return (
-    <div className="min-h-screen bg-[#F9F9F9] p-6">
+    <div className="min-h-screen bg-[#F9F9F9] p-6 text-base md:text-lg">
       <div className="max-w-8xl mx-auto">
         <Header />
 
