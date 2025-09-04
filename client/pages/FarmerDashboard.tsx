@@ -192,10 +192,10 @@ export default function FarmerDashboard() {
           <div className="lg:col-span-3">
             <Tabs value={activeTab} onValueChange={(v) => setActiveTab(String(v))} className="">
               <TabsList className="grid grid-cols-4 gap-2 mb-4">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="map">Map</TabsTrigger>
-                <TabsTrigger value="carbon">Carbon</TabsTrigger>
-                <TabsTrigger value="profile">Profile</TabsTrigger>
+                <TabsTrigger value="overview">{t('overview')}</TabsTrigger>
+                <TabsTrigger value="map">{t('map')}</TabsTrigger>
+                <TabsTrigger value="carbon">{t('carbon')}</TabsTrigger>
+                <TabsTrigger value="profile">{t('profile')}</TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview">
