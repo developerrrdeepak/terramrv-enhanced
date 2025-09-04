@@ -184,10 +184,10 @@ export default function FarmerDashboard() {
         <Header />
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <Sidebar />
+          <Sidebar active={tabToKey[activeTab] || 'Overview'} onSelect={handleSidebarSelect} />
 
           <div className="lg:col-span-3">
-            <Tabs defaultValue="overview" className="">
+            <Tabs value={activeTab} onValueChange={(v) => setActiveTab(String(v))} className="">
               <TabsList className="grid grid-cols-4 gap-2 mb-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="map">Map</TabsTrigger>
