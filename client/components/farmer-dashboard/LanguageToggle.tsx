@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+import { useI18n } from "@/contexts/I18nContext";
 
 function LanguageToggle() {
-  const [lang, setLang] = useState<'en'|'hi'>('en');
+  const { lang, setLang } = useI18n();
   return (
     <div className="flex items-center space-x-2">
       <button onClick={() => setLang('en')} aria-pressed={lang==='en'} className={`px-2 py-1 rounded-md ${lang==='en'? 'bg-[hsl(var(--primary))] text-white' : 'bg-white border'}`}>EN</button>
