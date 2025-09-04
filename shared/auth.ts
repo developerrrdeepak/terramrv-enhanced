@@ -46,6 +46,8 @@ export interface Admin {
   email: string;
   name: string;
   role: "admin" | "super_admin";
+  photoUrl?: string;
+  kyc?: { type?: string; url: string }[];
   createdAt: Date;
 }
 
