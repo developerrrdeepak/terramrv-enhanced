@@ -8,7 +8,8 @@ const translations: Record<string, Record<string, string>> = {
     uploadDocuments: "Upload Documents",
     joinProject: "Join Project",
     completeProfile: "Complete Profile",
-    pleaseCompleteProfile: "Please complete your profile to access all features",
+    pleaseCompleteProfile:
+      "Please complete your profile to access all features",
     profileSetup: "Profile Setup",
     farmData: "Farm & Crop Data",
     profileVerified: "Profile Verified",
@@ -98,7 +99,11 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     return translations[lang]?.[key] ?? translations["en"]?.[key] ?? key;
   };
 
-  return <I18nContext.Provider value={{ lang, setLang, t }}>{children}</I18nContext.Provider>;
+  return (
+    <I18nContext.Provider value={{ lang, setLang, t }}>
+      {children}
+    </I18nContext.Provider>
+  );
 }
 
 export function useI18n() {

@@ -441,7 +441,10 @@ class AuthService {
   }
 
   // Update admin profile
-  async updateAdmin(id: string, updates: Partial<Admin>): Promise<Admin | null> {
+  async updateAdmin(
+    id: string,
+    updates: Partial<Admin>,
+  ): Promise<Admin | null> {
     if (!dbAvailable()) {
       for (const a of memory.admins.values()) {
         if (a.id === id) {

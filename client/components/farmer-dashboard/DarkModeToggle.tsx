@@ -7,7 +7,9 @@ export default function DarkModeToggle() {
       const stored = localStorage.getItem("theme");
       if (stored) return stored === "dark";
       return document.documentElement.classList.contains("dark");
-    } catch { return false; }
+    } catch {
+      return false;
+    }
   });
 
   useEffect(() => {
@@ -21,8 +23,16 @@ export default function DarkModeToggle() {
   }, [dark]);
 
   return (
-    <button aria-pressed={dark} onClick={() => setDark(!dark)} className="p-2 rounded-md bg-white border focus-ring">
-      {dark ? <Sun className="w-5 h-5 text-yellow-500"/> : <Moon className="w-5 h-5 text-gray-600"/>}
+    <button
+      aria-pressed={dark}
+      onClick={() => setDark(!dark)}
+      className="p-2 rounded-md bg-white border focus-ring"
+    >
+      {dark ? (
+        <Sun className="w-5 h-5 text-yellow-500" />
+      ) : (
+        <Moon className="w-5 h-5 text-gray-600" />
+      )}
     </button>
   );
 }

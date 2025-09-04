@@ -70,10 +70,14 @@ export function createServer() {
   app.post("/api/auth/send-otp", sendOTP);
   app.post("/api/auth/verify-otp", verifyOTP);
   // Upload endpoints (profile photo and KYC) - accept base64 in JSON
-  import("./routes/uploads").then((m) => {
-    app.post("/api/auth/upload-photo", m.uploadProfilePhoto);
-    app.post("/api/auth/upload-kyc", m.uploadKyc);
-  }).catch((e) => console.warn('⚠️ [UPLOAD ROUTES] Failed to register upload routes', e));
+  import("./routes/uploads")
+    .then((m) => {
+      app.post("/api/auth/upload-photo", m.uploadProfilePhoto);
+      app.post("/api/auth/upload-kyc", m.uploadKyc);
+    })
+    .catch((e) =>
+      console.warn("⚠️ [UPLOAD ROUTES] Failed to register upload routes", e),
+    );
   app.post("/api/auth/admin-login", adminLogin);
   app.post("/api/auth/farmer-register", farmerPasswordRegister);
   app.post("/api/auth/farmer-login", farmerPasswordLogin);

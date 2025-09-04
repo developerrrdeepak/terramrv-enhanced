@@ -19,16 +19,26 @@ async function ensureUploadsDir() {
 export const uploadProfilePhoto: RequestHandler = async (req, res) => {
   try {
     const token = req.headers.authorization?.replace("Bearer ", "");
-    if (!token) return res.status(401).json({ success: false, message: "No token provided" });
+    if (!token)
+      return res
+        .status(401)
+        .json({ success: false, message: "No token provided" });
 
     const user = await authService.getUserByToken(token);
-    if (!user) return res.status(401).json({ success: false, message: "Invalid token" });
+    if (!user)
+      return res.status(401).json({ success: false, message: "Invalid token" });
 
     const { filename, data } = req.body as { filename?: string; data?: string };
-    if (!data) return res.status(400).json({ success: false, message: "No data provided" });
+    if (!data)
+      return res
+        .status(400)
+        .json({ success: false, message: "No data provided" });
 
     const dir = await ensureUploadsDir();
-    const safeName = (filename || `${user.type}_photo_${Date.now()}`).replace(/[^a-zA-Z0-9._-]/g, "_");
+    const safeName = (filename || `${user.type}_photo_${Date.now()}`).replace(
+      /[^a-zA-Z0-9._-]/g,
+      "_",
+    );
     const filePath = path.join(dir, safeName);
 
     // Handle data URL
@@ -56,21 +66,37 @@ export const uploadProfilePhoto: RequestHandler = async (req, res) => {
 export const uploadKyc: RequestHandler = async (req, res) => {
   try {
     const token = req.headers.authorization?.replace("Bearer ", "");
-    if (!token) return res.status(401).json({ success: false, message: "No token provided" });
+    if (!token)
+      return res
+        .status(401)
+        .json({ success: false, message: "No token provided" });
 
     const user = await authService.getUserByToken(token);
-    if (!user) return res.status(401).json({ success: false, message: "Invalid token" });
+    if (!user)
+      return res.status(401).json({ success: false, message: "Invalid token" });
 
-    const docs = req.body?.docs as Array<{ filename?: string; data?: string; type?: string }>;
-    if (!Array.isArray(docs) || docs.length === 0) return res.status(400).json({ success: false, message: "No documents provided" });
+    const docs = req.body?.docs as Array<{
+      filename?: string;
+      data?: string;
+      type?: string;
+    }>;
+    if (!Array.isArray(docs) || docs.length === 0)
+      return res
+        .status(400)
+        .json({ success: false, message: "No documents provided" });
 
     const dir = await ensureUploadsDir();
     const saved: any[] = [];
 
     for (const doc of docs) {
-      const safeName = (doc.filename || `doc_${Date.now()}`).replace(/[^a-zA-Z0-9._-]/g, "_");
+      const safeName = (doc.filename || `doc_${Date.now()}`).replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_",
+      );
       const filePath = path.join(dir, safeName);
-      const base64 = (doc.data || "").includes(",") ? (doc.data || "").split(",")[1] : doc.data;
+      const base64 = (doc.data || "").includes(",")
+        ? (doc.data || "").split(",")[1]
+        : doc.data;
       const buffer = Buffer.from(base64 || "", "base64");
       await fs.writeFile(filePath, buffer);
       const urlPath = `/uploads/${safeName}`;

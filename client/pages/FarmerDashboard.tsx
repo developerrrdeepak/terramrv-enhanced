@@ -16,7 +16,9 @@ import NotificationsPanel from "@/components/farmer-dashboard/NotificationsPanel
 import { useI18n } from "@/contexts/I18nContext";
 
 const MapCard = lazy(() => import("@/components/farmer-dashboard/MapCard"));
-const ProfileEditor = lazy(() => import("@/components/farmer-dashboard/ProfileEditor"));
+const ProfileEditor = lazy(
+  () => import("@/components/farmer-dashboard/ProfileEditor"),
+);
 const CarbonWalletCard = lazy(
   () => import("@/components/farmer-dashboard/CarbonWalletCard"),
 );
@@ -73,7 +75,7 @@ export default function FarmerDashboard() {
     const tab = keyToTab[key] || "overview";
     setActiveTab(tab);
     // focus main content for accessibility
-    const main = document.querySelector('main');
+    const main = document.querySelector("main");
     if (main) (main as HTMLElement).focus();
   };
 
@@ -186,25 +188,36 @@ export default function FarmerDashboard() {
         <Header />
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <Sidebar active={tabToKey[activeTab] || 'Overview'} onSelect={handleSidebarSelect} />
+          <Sidebar
+            active={tabToKey[activeTab] || "Overview"}
+            onSelect={handleSidebarSelect}
+          />
 
           <div className="lg:col-span-3">
-            <Tabs value={activeTab} onValueChange={(v) => setActiveTab(String(v))} className="">
+            <Tabs
+              value={activeTab}
+              onValueChange={(v) => setActiveTab(String(v))}
+              className=""
+            >
               <TabsList className="grid grid-cols-4 gap-2 mb-4">
-                <TabsTrigger value="overview">{t('overview')}</TabsTrigger>
-                <TabsTrigger value="map">{t('map')}</TabsTrigger>
-                <TabsTrigger value="carbon">{t('carbon')}</TabsTrigger>
-                <TabsTrigger value="profile">{t('profile')}</TabsTrigger>
+                <TabsTrigger value="overview">{t("overview")}</TabsTrigger>
+                <TabsTrigger value="map">{t("map")}</TabsTrigger>
+                <TabsTrigger value="carbon">{t("carbon")}</TabsTrigger>
+                <TabsTrigger value="profile">{t("profile")}</TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview">
-                <main tabIndex={-1} role="main" className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <main
+                  tabIndex={-1}
+                  role="main"
+                  className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+                >
                   <section className="lg:col-span-2 space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <Suspense
                         fallback={
                           <div className="p-6 bg-white rounded-lg shadow-sm">
-                            {t('loading')}
+                            {t("loading")}
                           </div>
                         }
                       >
@@ -220,7 +233,7 @@ export default function FarmerDashboard() {
                       <Suspense
                         fallback={
                           <div className="p-6 bg-white rounded-lg shadow-sm">
-                            {t('loading')}
+                            {t("loading")}
                           </div>
                         }
                       >
@@ -406,7 +419,13 @@ export default function FarmerDashboard() {
 
               <TabsContent value="profile">
                 <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <Suspense fallback={<div className="p-6 bg-white rounded-lg shadow-sm">Loading profile editor...</div>}>
+                  <Suspense
+                    fallback={
+                      <div className="p-6 bg-white rounded-lg shadow-sm">
+                        Loading profile editor...
+                      </div>
+                    }
+                  >
                     <ProfileEditor onUpdate={() => window.location.reload()} />
                   </Suspense>
 
@@ -415,20 +434,40 @@ export default function FarmerDashboard() {
                       <CardTitle>Update Profile</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <form onSubmit={handleProfileUpdate} className="space-y-4">
+                      <form
+                        onSubmit={handleProfileUpdate}
+                        className="space-y-4"
+                      >
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="name2">Full Name</Label>
-                            <Input id="name2" value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} />
+                            <Input
+                              id="name2"
+                              value={profile.name}
+                              onChange={(e) =>
+                                setProfile({ ...profile, name: e.target.value })
+                              }
+                            />
                           </div>
                           <div>
                             <Label htmlFor="phone2">Phone</Label>
-                            <Input id="phone2" value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} />
+                            <Input
+                              id="phone2"
+                              value={profile.phone}
+                              onChange={(e) =>
+                                setProfile({
+                                  ...profile,
+                                  phone: e.target.value,
+                                })
+                              }
+                            />
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <Button type="submit" className="bg-[#4CAF50]">Save</Button>
+                          <Button type="submit" className="bg-[#4CAF50]">
+                            Save
+                          </Button>
                           <Button variant="outline">Cancel</Button>
                         </div>
                       </form>

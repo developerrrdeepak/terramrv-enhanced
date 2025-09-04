@@ -12,12 +12,13 @@ export default function ProfileEditor({ onUpdate }: { onUpdate?: () => void }) {
   const [kycFiles, setKycFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const readAsDataUrl = (file: File) => new Promise<string>((resolve, reject) => {
-    const fr = new FileReader();
-    fr.onload = () => resolve(String(fr.result));
-    fr.onerror = reject;
-    fr.readAsDataURL(file);
-  });
+  const readAsDataUrl = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(String(fr.result));
+      fr.onerror = reject;
+      fr.readAsDataURL(file);
+    });
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -65,7 +66,13 @@ export default function ProfileEditor({ onUpdate }: { onUpdate?: () => void }) {
     if (kycFiles.length === 0) return;
     setLoading(true);
     try {
-      const docs = await Promise.all(kycFiles.map(async (f) => ({ filename: f.name, data: await readAsDataUrl(f), type: 'kyc' })));
+      const docs = await Promise.all(
+        kycFiles.map(async (f) => ({
+          filename: f.name,
+          data: await readAsDataUrl(f),
+          type: "kyc",
+        })),
+      );
       const token = localStorage.getItem("auth_token");
       const res = await fetch("/api/auth/upload-kyc", {
         method: "POST",
@@ -96,13 +103,27 @@ export default function ProfileEditor({ onUpdate }: { onUpdate?: () => void }) {
     <div className="space-y-4">
       <div className="flex items-center gap-4">
         <div className="w-24 h-24 bg-[hsl(var(--muted))] rounded-full overflow-hidden flex items-center justify-center">
-          {photoPreview ? <img src={photoPreview} alt="preview" className="w-full h-full object-cover" /> : <div className="text-sm text-gray-500">No photo</div>}
+          {photoPreview ? (
+            <img
+              src={photoPreview}
+              alt="preview"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="text-sm text-gray-500">No photo</div>
+          )}
         </div>
         <div className="flex flex-col gap-2">
           <label className="cursor-pointer">
             <Input type="file" onChange={handlePhotoChange} accept="image/*" />
           </label>
-          <Button onClick={uploadPhoto} disabled={!photoFile || loading} className="bg-[hsl(var(--primary))]">{loading ? t('loading') : t('uploadPhoto')}</Button>
+          <Button
+            onClick={uploadPhoto}
+            disabled={!photoFile || loading}
+            className="bg-[hsl(var(--primary))]"
+          >
+            {loading ? t("loading") : t("uploadPhoto")}
+          </Button>
         </div>
       </div>
 
@@ -110,10 +131,20 @@ export default function ProfileEditor({ onUpdate }: { onUpdate?: () => void }) {
         <div className="text-sm font-medium mb-2">KYC Documents</div>
         <Input type="file" multiple onChange={handleKycChange} />
         <div className="mt-2 space-y-1">
-          {kycFiles.map(f => <div key={f.name} className="text-sm text-gray-600">{f.name}</div>)}
+          {kycFiles.map((f) => (
+            <div key={f.name} className="text-sm text-gray-600">
+              {f.name}
+            </div>
+          ))}
         </div>
         <div className="mt-2">
-          <Button onClick={uploadKyc} disabled={kycFiles.length===0 || loading} className="bg-[hsl(var(--primary))]">{loading ? t('loading') : t('uploadKYC')}</Button>
+          <Button
+            onClick={uploadKyc}
+            disabled={kycFiles.length === 0 || loading}
+            className="bg-[hsl(var(--primary))]"
+          >
+            {loading ? t("loading") : t("uploadKYC")}
+          </Button>
         </div>
       </div>
     </div>
