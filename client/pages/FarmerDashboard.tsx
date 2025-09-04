@@ -205,7 +205,7 @@ export default function FarmerDashboard() {
                       <Suspense
                         fallback={
                           <div className="p-6 bg-white rounded-lg shadow-sm">
-                            Loading map...
+                            {t('loading')}
                           </div>
                         }
                       >
