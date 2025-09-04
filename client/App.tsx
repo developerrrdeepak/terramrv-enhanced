@@ -30,30 +30,32 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
       <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/solutions" element={<Solutions />} />
-                <Route path="/tools" element={<Tools />} />
-                <Route path="/case-studies" element={<CaseStudies />} />
-                <Route path="/resources" element={<Resources />} />
-                <Route path="/about" element={<AboutUs />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/farmer-dashboard" element={<FarmerDashboard />} />
-                <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                {import.meta.env.DEV && (
-                  <Route path="/test-email" element={<TestEmail />} />
-                )}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Layout>
-          </BrowserRouter>
-        </TooltipProvider>
+        <I18nProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Landing />} />
+                  <Route path="/solutions" element={<Solutions />} />
+                  <Route path="/tools" element={<Tools />} />
+                  <Route path="/case-studies" element={<CaseStudies />} />
+                  <Route path="/resources" element={<Resources />} />
+                  <Route path="/about" element={<AboutUs />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/farmer-dashboard" element={<FarmerDashboard />} />
+                  <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                  {import.meta.env.DEV && (
+                    <Route path="/test-email" element={<TestEmail />} />
+                  )}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Layout>
+            </BrowserRouter>
+          </TooltipProvider>
+        </I18nProvider>
       </AuthProvider>
     </ThemeProvider>
   </QueryClientProvider>
