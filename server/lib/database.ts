@@ -143,6 +143,12 @@ class Database {
         { unique: true },
       );
 
+      // Credits and payouts collections
+      await this.getCreditsCollection().createIndex({ farmerId: 1 });
+      await this.getCreditsCollection().createIndex({ status: 1 });
+      await this.getPayoutsCollection().createIndex({ farmerId: 1 });
+      await this.getPayoutsCollection().createIndex({ status: 1 });
+
       console.log("📊 Database indexes created successfully");
     } catch (error) {
       console.error("❌ Failed to create database indexes:", error);
