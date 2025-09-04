@@ -30,6 +30,7 @@ const PaymentsCard = lazy(
 
 export default function FarmerDashboard() {
   const { user, isAuthenticated, updateProfile } = useAuth();
+  const { t } = useI18n();
   const [profile, setProfile] = useState({
     name: "",
     phone: "",
