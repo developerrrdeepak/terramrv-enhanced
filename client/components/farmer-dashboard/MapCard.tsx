@@ -9,15 +9,15 @@ function MapCard() {
     <Card className="rounded-2xl shadow-sm card-interactive card-soft">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>Farm Map Preview</span>
+          <span>{t('mapPreview')}</span>
           <div className="flex items-center space-x-2 text-sm text-gray-600">
             <label className="flex items-center space-x-2">
               <input type="checkbox" checked={ndvi} onChange={() => setNdvi(!ndvi)} />
-              <span>NDVI</span>
+              <span>{t('ndvi')}</span>
             </label>
             <label className="flex items-center space-x-2">
               <input type="checkbox" checked={landcover} onChange={() => setLandcover(!landcover)} />
-              <span>Landcover</span>
+              <span>{t('landcover')}</span>
             </label>
           </div>
         </CardTitle>
