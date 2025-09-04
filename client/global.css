@@ -1,0 +1,285 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /**
+   * Tailwind CSS theme
+   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
+   * A different format will require also updating the theme in tailwind.config.ts.
+  */
+  :root {
+    /* Farmer Dashboard palette (soft green, earthy brown, sky blue, off-white) */
+    --background: 0 0% 98%; /* off-white base */
+    --foreground: 0 0% 6%;
+
+    /* Cards and surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 6%;
+
+    /* Primary colors (expressed as H S% L%) */
+    --primary: 122 39% 41%; /* #4CAF50 */
+    --primary-foreground: 0 0% 100%;
+
+    --accent: 207 90% 56%; /* #2196F3 */
+    --accent-foreground: 0 0% 100%;
+
+    --secondary: 19 20% 36%; /* #795548 earthy brown */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 30%;
+
+    --destructive: 0 0% 0%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 98%;
+    --ring: 122 39% 41%;
+
+    --radius: 1rem; /* rounded 2xl feel */
+
+    /* Typography scale */
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+    --font-size-4xl: 2.25rem;
+    --font-size-5xl: 3rem;
+    --font-size-6xl: 3.75rem;
+
+    /* Line heights */
+    --leading-tight: 1.25;
+    --leading-snug: 1.375;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.625;
+    --leading-loose: 2;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 8%;
+    --sidebar-primary: 122 39% 41%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 94%;
+    --sidebar-ring: 122 39% 41%;
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 158 64% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 70%;
+
+    --accent: 0 0% 10%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 0% 0%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 158 64% 52%;
+    --sidebar-background: 0 0% 0%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 158 64% 52%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 158 64% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-variant-ligatures: common-ligatures;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family:
+      "Inter",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Poppins", "Inter", sans-serif;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  .font-mono {
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  }
+
+  /* Custom text styles */
+  .text-hero {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .text-subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+  }
+
+  .text-feature {
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .text-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  /* Hindi/Hinglish text improvements */
+  .text-hindi {
+    font-family: "Poppins", "Inter", "Noto Sans Devanagari", sans-serif;
+    font-weight: 500;
+  }
+
+  /* Enhanced button text */
+  .btn-text {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* Code text improvements */
+  .code-text {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 500;
+    font-size: 0.9em;
+    line-height: 1.6;
+  }
+
+  /* Improved readability for stats */
+  .stat-number {
+    font-family: "Inter", sans-serif;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+  }
+
+  /* Custom animations for better UI experience */
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.8s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive utilities */
+  @media (max-width: 640px) {
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+
+  /* Optimize for touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .hover\:scale-105:hover {
+      transform: none;
+    }
+  }
+
+  /* Farmer dashboard - card interactions and micro-animations */
+  .card-interactive {
+    transition:
+      transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 220ms;
+  }
+  .card-interactive:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.08);
+  }
+  .card-soft {
+    border-radius: 1rem;
+    background: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border: 1px solid hsl(var(--border));
+  }
+  .focus-ring:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.12);
+    border-radius: 0.75rem;
+  }
+
+  .micro-fade-in {
+    animation: fadeIn 360ms ease-out both;
+  }
+}

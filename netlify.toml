@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build:client"
+  functions = "netlify/functions"
+  publish = "dist/spa"
+  environment = { SECRETS_SCAN_OMIT_PATHS = "*.md,.env.example,.builder/**/*,scripts/**/*,.netlify/plugins/**/*,pnpm-lock.yaml" }
+
+[functions]
+  node_bundler = "esbuild"
+
+# API redirects
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+# SPA fallback - serve index.html for all non-API routes
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
