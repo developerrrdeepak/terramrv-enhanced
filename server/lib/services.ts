@@ -440,6 +440,34 @@ class AuthService {
     };
   }
 
+  // Update admin profile
+  async updateAdmin(id: string, updates: Partial<Admin>): Promise<Admin | null> {
+    if (!dbAvailable()) {
+      for (const a of memory.admins.values()) {
+        if (a.id === id) {
+          const updated = { ...a, ...updates, updatedAt: new Date() } as Admin;
+          memory.admins.set(id, updated);
+          return updated;
+        }
+      }
+      return null;
+    }
+
+    const adminsCollection = this.db.getAdminsCollection();
+    const updateData = { ...updates, updatedAt: new Date() };
+    delete (updateData as any).id;
+
+    const result = await adminsCollection.findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+      { returnDocument: "after" },
+    );
+
+    if (!result) return null;
+
+    return { id: result._id?.toString() || "", ...result } as Admin;
+  }
+
   async createDefaultAdmin(
     email: string,
     name: string = "Admin",
