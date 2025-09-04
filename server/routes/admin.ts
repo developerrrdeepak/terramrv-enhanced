@@ -21,7 +21,10 @@ export const getCredits: RequestHandler = async (req, res) => {
     if (!user || user.type !== "admin") return;
 
     const creditsCollection = db.getCreditsCollection();
-    const credits = await creditsCollection.find({}).sort({ requestedAt: -1 }).toArray();
+    const credits = await creditsCollection
+      .find({})
+      .sort({ requestedAt: -1 })
+      .toArray();
 
     res.json({ success: true, credits });
   } catch (error) {
@@ -35,8 +38,14 @@ export const approveCredit: RequestHandler = async (req, res) => {
     const user = await adminGuard(req, res);
     if (!user || user.type !== "admin") return;
 
-    const { creditId, approve } = req.body as { creditId?: string; approve?: boolean };
-    if (!creditId) return res.status(400).json({ success: false, message: "creditId required" });
+    const { creditId, approve } = req.body as {
+      creditId?: string;
+      approve?: boolean;
+    };
+    if (!creditId)
+      return res
+        .status(400)
+        .json({ success: false, message: "creditId required" });
 
     const creditsCollection = db.getCreditsCollection();
 
@@ -49,9 +58,16 @@ export const approveCredit: RequestHandler = async (req, res) => {
       },
     } as any;
 
-    const result = await creditsCollection.findOneAndUpdate({ _id: objectId }, update, { returnDocument: "after" });
+    const result = await creditsCollection.findOneAndUpdate(
+      { _id: objectId },
+      update,
+      { returnDocument: "after" },
+    );
 
-    if (!result.value) return res.status(404).json({ success: false, message: "Credit not found" });
+    if (!result.value)
+      return res
+        .status(404)
+        .json({ success: false, message: "Credit not found" });
 
     const c = result.value as any;
 
@@ -81,7 +97,10 @@ export const getPayouts: RequestHandler = async (req, res) => {
     if (!user || user.type !== "admin") return;
 
     const payoutsCollection = db.getPayoutsCollection();
-    const payouts = await payoutsCollection.find({}).sort({ createdAt: -1 }).toArray();
+    const payouts = await payoutsCollection
+      .find({})
+      .sort({ createdAt: -1 })
+      .toArray();
 
     res.json({ success: true, payouts });
   } catch (error) {
@@ -96,7 +115,10 @@ export const markPayoutPaid: RequestHandler = async (req, res) => {
     if (!user || user.type !== "admin") return;
 
     const { payoutId } = req.body as { payoutId?: string };
-    if (!payoutId) return res.status(400).json({ success: false, message: "payoutId required" });
+    if (!payoutId)
+      return res
+        .status(400)
+        .json({ success: false, message: "payoutId required" });
 
     const payoutsCollection = db.getPayoutsCollection();
     const objectId = new ObjectId(payoutId);
@@ -109,9 +131,16 @@ export const markPayoutPaid: RequestHandler = async (req, res) => {
       },
     } as any;
 
-    const result = await payoutsCollection.findOneAndUpdate({ _id: objectId }, update, { returnDocument: "after" });
+    const result = await payoutsCollection.findOneAndUpdate(
+      { _id: objectId },
+      update,
+      { returnDocument: "after" },
+    );
 
-    if (!result.value) return res.status(404).json({ success: false, message: "Payout not found" });
+    if (!result.value)
+      return res
+        .status(404)
+        .json({ success: false, message: "Payout not found" });
 
     res.json({ success: true, payout: result.value });
   } catch (error) {
