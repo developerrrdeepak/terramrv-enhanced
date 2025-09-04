@@ -341,10 +341,7 @@ export default function AuthModal({
               transition={{ duration: 0.3 }}
             >
               <div className="text-center">
-                <p className="text-sm text-gray-600 mb-4">
-                  किसानों के लिए तेज़ और आस��न साइन इन
-                </p>
-                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="grid grid-cols-2 gap-3 mb-4">
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -411,7 +408,7 @@ export default function AuthModal({
                 <Separator />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="bg-white px-2 text-xs text-gray-500">
-                    या
+                    OR
                   </span>
                 </div>
               </div>
