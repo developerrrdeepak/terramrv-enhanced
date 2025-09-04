@@ -95,6 +95,14 @@ class Database {
     return this.getDb().collection("passwords");
   }
 
+  getCreditsCollection(): Collection<any> {
+    return this.getDb().collection("credits");
+  }
+
+  getPayoutsCollection(): Collection<any> {
+    return this.getDb().collection("payouts");
+  }
+
   private async createIndexes(): Promise<void> {
     try {
       // Farmers collection indexes
