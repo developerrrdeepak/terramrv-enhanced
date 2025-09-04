@@ -296,8 +296,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         response.status,
       );
 
+      // Read body once and parse safely
+      const { parsed, raw } = await readJsonOrText(response);
+
       if (!response.ok) {
-        const errorText = await response.text();
+        const errorText = raw;
         console.error(
           "❌ [CLIENT] Farmer registration failed:",
           response.status,
@@ -310,7 +313,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         };
       }
 
-      const result = await response.json();
+      const result = parsed ?? { success: true };
       console.log("📊 [CLIENT] Farmer register result:", {
         success: result.success,
         hasUser: !!result.user,
