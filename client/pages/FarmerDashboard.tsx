@@ -377,46 +377,30 @@ export default function FarmerDashboard() {
               </TabsContent>
 
               <TabsContent value="profile">
-                <div className="mt-4">
+                <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <Suspense fallback={<div className="p-6 bg-white rounded-lg shadow-sm">Loading profile editor...</div>}>
+                    <ProfileEditor onUpdate={() => window.location.reload()} />
+                  </Suspense>
+
                   <Card className="rounded-2xl shadow-sm">
                     <CardHeader>
                       <CardTitle>Update Profile</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <form
-                        onSubmit={handleProfileUpdate}
-                        className="space-y-4"
-                      >
+                      <form onSubmit={handleProfileUpdate} className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="name2">Full Name</Label>
-                            <Input
-                              id="name2"
-                              value={profile.name}
-                              onChange={(e) =>
-                                setProfile({ ...profile, name: e.target.value })
-                              }
-                            />
+                            <Input id="name2" value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} />
                           </div>
                           <div>
                             <Label htmlFor="phone2">Phone</Label>
-                            <Input
-                              id="phone2"
-                              value={profile.phone}
-                              onChange={(e) =>
-                                setProfile({
-                                  ...profile,
-                                  phone: e.target.value,
-                                })
-                              }
-                            />
+                            <Input id="phone2" value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} />
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <Button type="submit" className="bg-[#4CAF50]">
-                            Save
-                          </Button>
+                          <Button type="submit" className="bg-[#4CAF50]">Save</Button>
                           <Button variant="outline">Cancel</Button>
                         </div>
                       </form>
