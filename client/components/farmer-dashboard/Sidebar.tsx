@@ -7,13 +7,15 @@ type Props = {
 };
 
 function Sidebar({ active = "Overview", onSelect }: Props) {
+  const { t } = useI18n();
+
   const items = [
-    { key: "Overview", icon: <Home className="w-5 h-5 text-[hsl(var(--primary))]" /> },
-    { key: "Farm Map", icon: <MapPin className="w-5 h-5 text-[#795548]" /> },
-    { key: "Carbon Wallet", icon: <Leaf className="w-5 h-5 text-[hsl(var(--primary))]" /> },
-    { key: "Weather", icon: <CloudDrizzle className="w-5 h-5 text-[hsl(var(--accent))]" /> },
-    { key: "Payments", icon: <CreditCard className="w-5 h-5 text-[#795548]" /> },
-    { key: "Help", icon: <HelpCircle className="w-5 h-5 text-[#795548]" /> },
+    { key: t('overview'), id: 'Overview', icon: <Home className="w-5 h-5 text-[hsl(var(--primary))]" /> },
+    { key: t('map'), id: 'Farm Map', icon: <MapPin className="w-5 h-5 text-[#795548]" /> },
+    { key: t('carbon'), id: 'Carbon Wallet', icon: <Leaf className="w-5 h-5 text-[hsl(var(--primary))]" /> },
+    { key: t('overview'), id: 'Weather', icon: <CloudDrizzle className="w-5 h-5 text-[hsl(var(--accent))]" /> },
+    { key: t('overview'), id: 'Payments', icon: <CreditCard className="w-5 h-5 text-[#795548]" /> },
+    { key: t('overview'), id: 'Help', icon: <HelpCircle className="w-5 h-5 text-[#795548]" /> },
   ];
 
   const navRef = useRef<HTMLElement | null>(null);
