@@ -18,6 +18,12 @@ import {
   socialCallback,
   initializeDatabase,
 } from "./routes/auth";
+import {
+  getCredits,
+  approveCredit,
+  getPayouts,
+  markPayoutPaid,
+} from "./routes/admin";
 
 export function createServer() {
   const app = express();
