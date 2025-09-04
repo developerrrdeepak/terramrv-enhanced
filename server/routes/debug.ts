@@ -17,7 +17,9 @@ export const debugStatus: RequestHandler = async (req, res) => {
       }
 
       if (!token || token !== process.env.DEBUG_TOKEN) {
-        return res.status(401).json({ success: false, message: "Invalid debug token" });
+        return res
+          .status(401)
+          .json({ success: false, message: "Invalid debug token" });
       }
     }
 
@@ -55,10 +57,11 @@ export const debugStatus: RequestHandler = async (req, res) => {
       success: true,
       env,
       email_service: emailStatus,
-      db_check: checkDb ? { connected: dbConnected, error: dbError } : undefined,
+      db_check: checkDb
+        ? { connected: dbConnected, error: dbError }
+        : undefined,
       timestamp: new Date().toISOString(),
-      note:
-        "This endpoint reports presence of environment variables and email service status. It does NOT return secret values.",
+      note: "This endpoint reports presence of environment variables and email service status. It does NOT return secret values.",
     });
   } catch (error: any) {
     console.error("❌ [DEBUG STATUS] Error:", error);
