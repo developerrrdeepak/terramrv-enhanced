@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useI18n } from "@/contexts/I18nContext";
 
 function MapCard() {
+  const { t } = useI18n();
   const [ndvi, setNdvi] = useState(true);
   const [landcover, setLandcover] = useState(false);
 
