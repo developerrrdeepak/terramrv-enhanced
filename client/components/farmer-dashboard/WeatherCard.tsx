@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useI18n } from "@/contexts/I18nContext";
 
 const days = [
   { d: "Mon", t: 30, r: 10 },
