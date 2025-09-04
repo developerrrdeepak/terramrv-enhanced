@@ -5,15 +5,16 @@ import { Button } from "@/components/ui/button";
 import { ListChecks, Clock } from "lucide-react";
 
 function TasksCard() {
+  const { t } = useI18n();
   const [tasks, setTasks] = useState<any[]>([
-    { id: 1, text: "Check irrigation in field A", due: "Today", done: false },
-    { id: 2, text: "Apply compost", due: "2 days", done: false },
+    { id: 1, text: t('tasksReminders') + ': Check irrigation in field A', due: "Today", done: false },
+    { id: 2, text: t('tasksReminders') + ': Apply compost', due: "2 days", done: false },
   ]);
   const [val, setVal] = useState("");
 
   const add = () => {
     if (!val.trim()) return;
-    setTasks((t) => [...t, { id: Date.now(), text: val.trim(), due: "Soon", done: false }]);
+    setTasks((tks) => [...tks, { id: Date.now(), text: val.trim(), due: "Soon", done: false }]);
     setVal("");
   };
 
