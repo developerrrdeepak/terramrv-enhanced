@@ -256,4 +256,29 @@
       transform: none;
     }
   }
+
+  /* Farmer dashboard - card interactions and micro-animations */
+  .card-interactive {
+    transition: transform 220ms cubic-bezier(.2,.8,.2,1), box-shadow 220ms;
+  }
+  .card-interactive:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.08);
+  }
+  .card-soft {
+    border-radius: 1rem;
+    background: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border: 1px solid hsl(var(--border));
+  }
+  .focus-ring:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.12);
+    border-radius: 0.75rem;
+  }
+
+  .micro-fade-in {
+    animation: fadeIn 360ms ease-out both;
+  }
+
 }
