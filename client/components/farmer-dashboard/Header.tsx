@@ -16,6 +16,7 @@ function Header() {
 
       <div className="flex items-center space-x-3">
         <LanguageToggle />
+        <DarkModeToggle />
         <button
           aria-label="Notifications"
           className="p-2 rounded-lg bg-white shadow-sm border focus-ring"
