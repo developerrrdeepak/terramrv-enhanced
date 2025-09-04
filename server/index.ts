@@ -106,14 +106,18 @@ export function createServer() {
   app.put("/api/admin/payouts/mark-paid", markPayoutPaid);
 
   // AI & MRV routes
-  import('./routes/ai').then((m) => {
-    app.post('/api/ai/verify', m.verifyWithAI);
-  }).catch((e) => console.warn('⚠️ [AI ROUTES] failed to register', e));
+  import("./routes/ai")
+    .then((m) => {
+      app.post("/api/ai/verify", m.verifyWithAI);
+    })
+    .catch((e) => console.warn("⚠️ [AI ROUTES] failed to register", e));
 
-  import('./routes/gee').then((m) => {
-    app.get('/api/gee/validate-key', m.validateGEEKey);
-    app.post('/api/gee/queue-ndvi', m.queueNdviJob);
-  }).catch((e) => console.warn('⚠️ [GEE ROUTES] failed to register', e));
+  import("./routes/gee")
+    .then((m) => {
+      app.get("/api/gee/validate-key", m.validateGEEKey);
+      app.post("/api/gee/queue-ndvi", m.queueNdviJob);
+    })
+    .catch((e) => console.warn("⚠️ [GEE ROUTES] failed to register", e));
 
   // Test routes (development only)
   if (process.env.NODE_ENV !== "production") {
