@@ -1,16 +1,9 @@
 import React from "react";
-import {
-  Home,
-  MapPin,
-  Leaf,
-  CloudDrizzle,
-  CreditCard,
-  HelpCircle,
-} from "lucide-react";
+import { Home, MapPin, Leaf, CloudDrizzle, CreditCard } from "lucide-react";
 
-export default function BottomNav() {
+function BottomNav() {
   return (
-    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-white rounded-2xl shadow-sm px-4 py-2 w-[92%] max-w-3xl flex justify-between items-center md:hidden">
+    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-white rounded-2xl shadow-sm px-4 py-2 w-[92%] max-w-3xl flex justify-between items-center md:hidden micro-fade-in">
       <button className="flex flex-col items-center text-sm text-gray-600">
         <Home className="w-5 h-5 text-[#4CAF50]" />
         <span>Home</span>
@@ -34,3 +27,5 @@ export default function BottomNav() {
     </nav>
   );
 }
+
+export default React.memo(BottomNav);
