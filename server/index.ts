@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { healthCheck } from "./routes/health";
 import { testEmail, getEmailStatus } from "./routes/test";
+import { debugStatus } from "./routes/debug";
 import {
   sendOTP,
   verifyOTP,
