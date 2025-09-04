@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
+import { useI18n } from "@/contexts/I18nContext";
 
 const chartData = Array.from({ length: 6 }).map((_, i) => ({
   month: new Date(new Date().setMonth(new Date().getMonth() - (5 - i))).toLocaleString("en-US", { month: "short" }),
