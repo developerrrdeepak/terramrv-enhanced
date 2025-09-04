@@ -3,6 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ListChecks, Clock } from "lucide-react";
+import { useI18n } from "@/contexts/I18nContext";
 
 function TasksCard() {
   const { t } = useI18n();
