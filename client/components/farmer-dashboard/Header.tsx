@@ -2,6 +2,7 @@ import React from "react";
 import { Bell } from "lucide-react";
 import LanguageToggle from "./LanguageToggle";
 import DarkModeToggle from "./DarkModeToggle";
+import { useI18n } from "@/contexts/I18nContext";
 
 function Header() {
   const { t } = useI18n();
