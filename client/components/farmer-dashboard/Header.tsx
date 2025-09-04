@@ -1,6 +1,7 @@
 import React from "react";
 import { Bell } from "lucide-react";
 import LanguageToggle from "./LanguageToggle";
+import DarkModeToggle from "./DarkModeToggle";
 
 function Header() {
   return (
