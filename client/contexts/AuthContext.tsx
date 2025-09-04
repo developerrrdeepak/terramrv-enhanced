@@ -362,8 +362,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       console.log("📡 [CLIENT] Farmer login Response status:", response.status);
 
+      const { parsed, raw } = await readJsonOrText(response);
+
       if (!response.ok) {
-        const errorText = await response.text();
+        const errorText = raw;
         console.error(
           "❌ [CLIENT] Farmer login failed:",
           response.status,
@@ -376,7 +378,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         };
       }
 
-      const result = await response.json();
+      const result = parsed ?? { success: true };
       console.log("📊 [CLIENT] Farmer login result:", {
         success: result.success,
         hasUser: !!result.user,
