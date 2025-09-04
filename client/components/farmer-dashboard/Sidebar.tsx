@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from "react";
-import React, { useRef, useEffect } from "react";
 import { Home, MapPin, Leaf, CloudDrizzle, CreditCard, HelpCircle } from "lucide-react";
 import { useI18n } from "@/contexts/I18nContext";
 
