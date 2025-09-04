@@ -12,10 +12,11 @@ const days = [
 ];
 
 function WeatherCard() {
+  const { t } = useI18n();
   return (
     <Card className="rounded-2xl shadow-sm card-interactive card-soft">
       <CardHeader>
-        <CardTitle>7-day Forecast</CardTitle>
+        <CardTitle>{t('sevenDayForecast')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex gap-3 overflow-x-auto py-2">
