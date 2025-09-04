@@ -9,10 +9,11 @@ const alerts = [
 ];
 
 function NotificationsPanel() {
+  const { t } = useI18n();
   return (
     <Card className="rounded-2xl shadow-sm card-soft micro-fade-in">
       <CardHeader>
-        <CardTitle>Alerts & Notifications</CardTitle>
+        <CardTitle>{t('alertsNotifications')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
